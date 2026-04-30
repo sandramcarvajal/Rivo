@@ -33,15 +33,33 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [vehicle, setVehicle] = useState<Vehicle>({
-    make: 'Mazda',
-    model: '3 Grand Touring',
-    color: 'Gris Metalizado',
-    placa: 'SYC123',
-    capacity: 4
+  const [user, setUser] = useState<User | null>(() => {
+    const saved = localStorage.getItem('rivo_user');
+    return saved ? JSON.parse(saved) : null;
+  });
+  const [vehicle, setVehicle] = useState<Vehicle>(() => {
+    const saved = localStorage.getItem('rivo_vehicle');
+    return saved ? JSON.parse(saved) : {
+      make: 'Mazda',
+      model: '3 Grand Touring',
+      color: 'Gris Metalizado',
+      placa: 'SYC123',
+      capacity: 4
+    };
   });
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('rivo_user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('rivo_user');
+    }
+  }, [user]);
+
+  useEffect(() => {
+    localStorage.setItem('rivo_vehicle', JSON.stringify(vehicle));
+  }, [vehicle]);
 
   useEffect(() => {
     // Simulate checking session
@@ -51,18 +69,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => clearTimeout(timer);
   }, []);
 
+  const toTitleCase = (str: string = "") => {
+    return str.toLowerCase().split(' ').map(word => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }).join(' ');
+  };
+
   const login = async (email: string) => {
     if (!email.toLowerCase().endsWith('@syc.com.co')) {
       return false;
     }
 
+    // Extract name from email (e.g. juan.perez@syc.com.co -> Juan Perez)
+    const rawName = email.split('@')[0].replace(/\./g, ' ');
+    const name = toTitleCase(rawName);
+
     // Mock successful login
     setUser({
       id: 'u2',
-      name: 'Usuario SyC',
+      name: name,
       email: email,
       role: null,
-      avatar: 'https://ui-avatars.com/api/?name=Usuario+SyC&background=1A365D&color=fff',
+      avatar: `https://ui-avatars.com/api/?name=${name.replace(/ /g, '+')}&background=1A365D&color=fff`,
       hasCompletedProfile: false, // Default for new login in this demo
     });
     return true;
@@ -88,7 +116,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (user) {
       setUser({ 
         ...user, 
-        name: data.name,
+        name: toTitleCase(data.name),
         cedula: data.cedula,
         celula: data.celula,
         role: 'passenger',
@@ -109,7 +137,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (user) {
       setUser({ 
         ...user, 
-        name: data.name,
+        name: toTitleCase(data.name),
         cedula: data.cedula,
         celula: data.celula,
         role: 'driver',

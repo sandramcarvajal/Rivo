@@ -4,6 +4,8 @@ import { ArrowLeft, MapPin, Calendar, Clock, Users, DollarSign, ChevronRight, Ch
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
+import { toTitleCase } from '../lib/utils';
+import { v4 as uuidv4 } from 'uuid';
 
 export const CreateRouteScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -26,7 +28,26 @@ export const CreateRouteScreen: React.FC = () => {
 
   const handleCreate = async () => {
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 2000));
+    await new Promise(r => setTimeout(r, 1000));
+    
+    // Save to localStorage
+    const newRoute = {
+      id: uuidv4(),
+      driverId: 'u2', // Current user ID in this demo context
+      origin: toTitleCase(formData.origin),
+      destination: toTitleCase(formData.destination),
+      date: formData.date,
+      time: formData.time,
+      availableSeats: formData.seats,
+      totalSeats: formData.seats,
+      price: formData.price,
+      status: 'active',
+      passengers: []
+    };
+
+    const savedRoutes = JSON.parse(localStorage.getItem('rivo_driver_routes') || '[]');
+    localStorage.setItem('rivo_driver_routes', JSON.stringify([newRoute, ...savedRoutes]));
+
     setIsLoading(false);
     navigate('/driver');
   };
@@ -120,7 +141,7 @@ export const CreateRouteScreen: React.FC = () => {
               <div className="space-y-4">
                  <label className="text-sm font-medium text-gray-700 ml-1">Asientos disponibles</label>
                  <div className="flex justify-between items-center space-x-4">
-                    {[1, 2, 3, 4, 5].map(n => (
+                    {[1, 2, 3, 4].map(n => (
                        <button
                          key={n}
                          onClick={() => setFormData({...formData, seats: n})}
@@ -152,8 +173,8 @@ export const CreateRouteScreen: React.FC = () => {
         )}
       </div>
 
-      <div className="p-8 safe-area-bottom">
-        <Button className="w-full h-16 shadow-xl" onClick={handleNext} isLoading={isLoading}>
+      <div className="px-6 py-8 safe-area-bottom flex justify-center">
+        <Button className="w-full max-w-sm h-16 shadow-xl rounded-xl" onClick={handleNext} isLoading={isLoading}>
           {step < 3 ? 'Siguiente Paso' : 'Confirmar y Publicar'}
         </Button>
       </div>

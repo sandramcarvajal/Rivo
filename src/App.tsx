@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LoginScreen } from './screens/LoginScreen';
-import { RoleSelectionScreen } from './screens/RoleSelectionScreen';
+import { OnboardingScreen } from './screens/OnboardingScreen';
 import { DriverHomeScreen } from './screens/DriverHomeScreen';
 import { PassengerHomeScreen } from './screens/PassengerHomeScreen';
 import { CreateRouteScreen } from './screens/CreateRouteScreen';
@@ -17,7 +17,6 @@ import { RouteDetailScreen } from './screens/RouteDetailScreen';
 import { ProfileScreen } from './screens/ProfileScreen';
 import { HistoryScreen } from './screens/HistoryScreen';
 import { VehicleScreen } from './screens/VehicleScreen';
-import { OnboardingScreen } from './screens/OnboardingScreen';
 import { Drawer } from './components/Drawer';
 import { Menu } from 'lucide-react';
 
@@ -27,7 +26,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
 
   // Hide hamburger on some screens
-  const hideHamburger = ['/', '/login', '/role-selection', '/onboarding'].includes(location.pathname);
+  const hideHamburger = ['/', '/login', '/onboarding'].includes(location.pathname);
 
   return (
     <div className="flex-1 flex flex-col relative h-full">
@@ -60,10 +59,14 @@ const ProtectedRoute = ({ children, requiredRole }: { children: React.ReactNode,
 
   // If profile IS completed and trying to access onboarding, redirect away
   if (user.hasCompletedProfile && location.pathname === '/onboarding') {
-    return <Navigate to="/role-selection" />;
+    const target = user.role === 'driver' ? '/driver' : '/passenger';
+    return <Navigate to={target} />;
   }
   
-  if (requiredRole && user.role !== requiredRole) return <Navigate to="/role-selection" />;
+  if (requiredRole && user.role !== requiredRole) {
+    const target = user.role === 'driver' ? '/driver' : '/passenger';
+    return <Navigate to={target} />;
+  }
   
   return <Layout>{children}</Layout>;
 };
@@ -74,18 +77,12 @@ export default function App() {
       <AuthProvider>
         <div className="mobile-container overflow-hidden">
           <Routes>
-            <Route path="/" element={<Navigate to="/role-selection" />} />
+            <Route path="/" element={<Navigate to="/onboarding" />} />
             <Route path="/login" element={<LoginScreen />} />
             
             <Route path="/onboarding" element={
               <ProtectedRoute>
                 <OnboardingScreen />
-              </ProtectedRoute>
-            } />
-
-            <Route path="/role-selection" element={
-              <ProtectedRoute>
-                <RoleSelectionScreen />
               </ProtectedRoute>
             } />
 

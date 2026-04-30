@@ -21,7 +21,7 @@ export const ManageRequestsScreen: React.FC = () => {
       <div className="px-6 pt-12 pb-6 bg-white border-b border-slate-100 flex items-center justify-between relative">
         <button 
           onClick={() => navigate(-1)}
-          className="absolute left-6 top-12 p-3 bg-slate-50 border border-slate-100 rounded-2xl text-slate-800 active:scale-95 transition-transform z-10"
+          className="absolute left-6 top-12 p-3 bg-slate-50 border border-slate-100 rounded-md text-slate-800 active:scale-95 transition-transform z-10"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
@@ -34,8 +34,8 @@ export const ManageRequestsScreen: React.FC = () => {
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 space-y-6">
-        <div className="flex space-x-2 p-1 bg-gray-100 rounded-2xl">
-           <button className="flex-1 py-3 bg-white shadow-sm rounded-xl text-xs font-bold text-primary uppercase tracking-tight">Pendientes</button>
+        <div className="flex space-x-2 p-1 bg-gray-100 rounded-md">
+           <button className="flex-1 py-3 bg-white shadow-sm rounded-sm text-xs font-bold text-primary uppercase tracking-tight">Pendientes</button>
            <button className="flex-1 py-3 text-xs font-bold text-gray-400 uppercase tracking-tight">Historial</button>
         </div>
 
@@ -48,12 +48,12 @@ export const ManageRequestsScreen: React.FC = () => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm overflow-hidden relative"
+                  className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm overflow-hidden relative"
                 >
                   <div className="flex items-center space-x-4 mb-6">
                      <img 
                       src={`https://ui-avatars.com/api/?name=${request.passengerName}&background=EBF8FF&color=1A365D`} 
-                      className="w-14 h-14 rounded-2xl" 
+                      className="w-14 h-14 rounded-md" 
                       alt="passenger" 
                      />
                      <div>
@@ -62,7 +62,7 @@ export const ManageRequestsScreen: React.FC = () => {
                      </div>
                   </div>
 
-                  <div className="space-y-3 mb-6 bg-slate-50 p-4 rounded-2xl border border-dashed border-slate-200">
+                  <div className="space-y-3 mb-6 bg-slate-50 p-4 rounded-md border border-dashed border-slate-200">
                      {(() => {
                        const route = MOCK_ROUTES.find(r => r.id === request.routeId);
                        return (
@@ -83,13 +83,13 @@ export const ManageRequestsScreen: React.FC = () => {
                   <div className="flex space-x-3">
                     <button 
                       onClick={() => handleAction(request.id, 'rejected')}
-                      className="flex-1 py-4 bg-gray-50 text-gray-600 font-bold rounded-2xl border border-gray-100 active:scale-95 transition-transform"
+                      className="flex-1 py-4 bg-gray-50 text-gray-600 font-bold rounded-md border border-gray-100 active:scale-95 transition-transform"
                     >
                       Rechazar
                     </button>
                     <button 
                        onClick={() => handleAction(request.id, 'accepted')}
-                       className="flex-1 py-4 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/20 flex items-center justify-center space-x-2 active:scale-95 transition-transform"
+                       className="flex-1 py-4 bg-primary text-white font-bold rounded-md shadow-lg shadow-primary/20 flex items-center justify-center space-x-2 active:scale-95 transition-transform"
                     >
                       <Check className="w-5 h-5" />
                       <span>Aceptar</span>
@@ -98,7 +98,7 @@ export const ManageRequestsScreen: React.FC = () => {
                 </motion.div>
               ))
             ) : (
-              <div className="bg-white rounded-[32px] p-12 border border-dashed border-slate-200 text-center">
+              <div className="bg-white rounded-2xl p-12 border border-dashed border-slate-200 text-center">
                  <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ListChecks className="w-8 h-8 text-slate-200" />
                  </div>
