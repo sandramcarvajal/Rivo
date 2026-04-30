@@ -31,7 +31,7 @@ export const LoginScreen: React.FC = () => {
     setIsLoading(false);
 
     if (success) {
-      navigate('/role-selection');
+      navigate('/onboarding');
     } else {
       setError('Solo se permiten correos @syc.com.co');
     }

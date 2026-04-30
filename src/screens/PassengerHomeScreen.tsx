@@ -6,6 +6,7 @@ import { MOCK_ROUTES, Route } from '../mock/data';
 import { RouteCard } from '../components/RouteCard';
 import { Button } from '../components/ui/Button';
 import { useNavigate } from 'react-router-dom';
+import { toTitleCase } from '../lib/utils';
 
 export const PassengerHomeScreen: React.FC = () => {
   const { user } = useAuth();
@@ -22,17 +23,24 @@ export const PassengerHomeScreen: React.FC = () => {
     <div className="flex-1 flex flex-col bg-slate-50 overflow-hidden">
       {/* Header */}
       <div className="bg-white px-6 pt-12 pb-6 shadow-sm z-20">
-        <div className="flex justify-between items-center mb-6 pl-14">
-          <div>
-            <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Hola, {user?.name?.split(' ')[0] || 'Usuario'}</span>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">¿A dónde vas?</h1>
+        <div className="flex justify-between items-center mb-8 pl-14">
+          <div className="flex items-center gap-3">
+             <div className="w-10 h-10 bg-primary rounded-md flex items-center justify-center shadow-lg shadow-primary/20">
+                <div className="w-3 h-3 bg-white rounded-sm rotate-45" />
+             </div>
+             <span className="text-xl font-black text-slate-800 tracking-tighter uppercase italic">Rivo</span>
           </div>
           <div className="flex items-center space-x-3">
-             <button className="p-3 bg-slate-50 text-slate-400 rounded-2xl relative border border-slate-100 shadow-sm">
+             <button className="p-3 bg-slate-50 text-slate-400 rounded-md relative border border-slate-100 shadow-sm transition-transform active:scale-95">
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-blue-500 rounded-full border-2 border-white"></span>
              </button>
           </div>
+        </div>
+
+        <div className="mb-6">
+           <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-1 block">Pasajero</span>
+           <h1 className="text-2xl font-black text-slate-900 tracking-tight">¿A dónde vas, {user?.name?.split(' ')[0] ? toTitleCase(user.name.split(' ')[0]) : 'Usuario'}?</h1>
         </div>
 
         <div className="relative">
@@ -40,11 +48,11 @@ export const PassengerHomeScreen: React.FC = () => {
           <input
             type="text"
             placeholder="Buscar por sede o punto de origen..."
-            className="w-full pl-12 pr-12 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/10 text-sm font-medium placeholder:text-slate-400"
+            className="w-full pl-12 pr-12 py-4 bg-slate-50 border-none rounded-md focus:ring-2 focus:ring-primary/10 text-sm font-medium placeholder:text-slate-400"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
           />
-          <button className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 bg-white rounded-lg shadow-sm">
+          <button className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 bg-white rounded-sm shadow-sm">
             <Filter className="w-4 h-4 text-primary" />
           </button>
         </div>
@@ -94,7 +102,7 @@ export const PassengerHomeScreen: React.FC = () => {
         <NavIcon icon={<ClipboardList className="w-6 h-6" />} label="Mis Viajes" onClick={() => navigate('/my-requests')} />
         <div className="relative -mt-12">
             <button 
-              onClick={() => navigate('/role-selection')}
+              onClick={() => navigate('/onboarding')}
               className="w-14 h-14 bg-primary rounded-full shadow-lg shadow-primary/30 flex items-center justify-center text-white active:scale-95 transition-transform"
             >
               <Plus className="w-8 h-8" />

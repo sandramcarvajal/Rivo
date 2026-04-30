@@ -26,10 +26,10 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const sizes = {
-    sm: 'px-4 py-2 text-xs rounded-xl font-bold uppercase tracking-wider',
-    md: 'px-6 py-4 text-sm rounded-2xl font-bold',
-    lg: 'px-8 py-5 text-base rounded-[24px] font-black tracking-tight',
-    icon: 'p-3 rounded-2xl',
+    sm: 'px-4 py-2 text-xs rounded-sm font-bold uppercase tracking-wider',
+    md: 'px-6 py-4 text-sm rounded-md font-bold',
+    lg: 'px-8 py-5 text-base rounded-xl font-black tracking-tight',
+    icon: 'p-3 rounded-md',
   };
 
   return (
