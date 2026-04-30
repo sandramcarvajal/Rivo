@@ -4,11 +4,11 @@
  * 0: Sunday, 1: Monday, ..., 4: Thursday, ...
  */
 export const PICO_Y_PLACA_RULES: Record<number, number[]> = {
-  1: [1, 2], // Monday
-  2: [3, 4], // Tuesday
-  3: [7, 8], // Wednesday
+  1: [0, 9], // Monday
+  2: [1, 2], // Tuesday
+  3: [3, 4], // Wednesday
   4: [5, 6], // Thursday (Requested Rule)
-  5: [9, 0], // Friday
+  5: [7, 8], // Friday
 };
 
 /**
