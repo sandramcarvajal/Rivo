@@ -1,20 +1,27 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# RIVO
 
-# Run and deploy your AI Studio app
+## Propósito
 
-This contains everything you need to run your app locally.
+RIVO es una aplicación diseñada para mejorar la movilidad de los empleados de SYC, promoviendo una cultura de colaboración, solidaridad y compañerismo dentro de la organización.
 
-View your app in AI Studio: https://ai.studio/apps/3d1a7a8c-c26a-426b-9a04-1a32e461b0da
+## Problema
 
-## Run Locally
+En el día a día, muchos compañeros enfrentan:
 
-**Prerequisites:**  Node.js
+* Altos costos de transporte
+* Pérdida de tiempo en desplazamientos
+* Saturación del transporte público
 
+Estas dificultades impactan la calidad de vida y la eficiencia laboral.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Solución
+
+RIVO propone una alternativa simple y humanista:
+
+* Conectar compañeros que comparten rutas similares
+* Facilitar la creación y exploración de viajes dentro de la empresa
+* Optimizar recursos mediante movilidad compartida
+
+## Resultado
+
+RIVO transforma un problema cotidiano en una oportunidad de conexión, eficiencia y bienestar dentro de SYC.
