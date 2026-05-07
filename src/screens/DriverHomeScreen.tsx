@@ -19,7 +19,9 @@ import {
   Users
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { MOCK_ROUTES, MOCK_REQUESTS, Route } from '../mock/data';
+import { useDrawer } from '../context/DrawerContext';
+import { useRuta } from '../context/RouteContext';
+import { MOCK_REQUESTS, Route } from '../mock/data';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { cn, toTitleCase } from '../lib/utils';
@@ -27,17 +29,12 @@ import { checkPicoYPlaca } from '../lib/pico-y-placa';
 
 export const DriverHomeScreen: React.FC = () => {
   const { user, vehicle } = useAuth();
+  const { rutas } = useRuta();
+  const { isDrawerOpen } = useDrawer();
   const navigate = useNavigate();
-  const [activeRoutes, setActiveRoutes] = useState<Route[]>([]);
   const pendingRequestsCount = MOCK_REQUESTS.filter(r => r.status === 'pending' && r.routeId.includes('r')).length;
 
-  useEffect(() => {
-    // Load routes from MOCK and LocalStorage
-    const mockRoutes = MOCK_ROUTES.filter(r => r.driverId === 'u1');
-    const localRoutes = JSON.parse(localStorage.getItem('rivo_driver_routes') || '[]');
-    setActiveRoutes([...localRoutes, ...mockRoutes]);
-  }, []);
-
+  const activeRoutes = rutas.filter((route) => route.driverId === user?.id && route.status === 'active');
   const isRestrictedToday = checkPicoYPlaca(vehicle.placa);
   const firstName = user?.name ? toTitleCase(user.name.split(' ')[0]) : 'Usuario';
 
@@ -195,7 +192,7 @@ export const DriverHomeScreen: React.FC = () => {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      whileHover={{ y: -4, shadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
+                      whileHover={{ y: -4, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => navigate(`/route/${route.id}`)}
                       className="bg-white p-6 rounded-2xl border border-slate-100 shadow-soft flex items-center justify-between group cursor-pointer transition-all"
@@ -269,7 +266,10 @@ export const DriverHomeScreen: React.FC = () => {
       </div>
 
       {/* Floating Sticky Button */}
-      <div className="fixed bottom-8 left-0 right-0 px-6 z-50 flex justify-center pointer-events-none">
+      <div className={cn(
+        "fixed bottom-8 left-0 right-0 px-6 flex justify-center pointer-events-none",
+        isDrawerOpen ? "z-30" : "z-50"
+      )}>
         <motion.div
            initial={{ y: 100 }}
            animate={{ y: 0 }}

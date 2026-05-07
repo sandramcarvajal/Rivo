@@ -20,6 +20,11 @@ export const OnboardingScreen: React.FC = () => {
     navigate('/driver');
   };
 
+  const getUserNameFromEmail = (email?: string) => {
+    if (!email) return 'Usuario';
+    return email.split('@')[0] || 'Usuario';
+  };
+
   if (step === 'driver-form') {
     return <DriverOnboardingForm onBack={() => setStep('selection')} onSubmit={handleDriverSubmit} />;
   }
@@ -30,7 +35,7 @@ export const OnboardingScreen: React.FC = () => {
 
   return (
     <OnboardingSelection
-      userName={user?.name?.split(' ')[0] || 'Usuario'}
+      userName={getUserNameFromEmail(user?.email)}
       onSelectDriver={() => setStep('driver-form')}
       onSelectPassenger={() => setStep('passenger-form')}
     />

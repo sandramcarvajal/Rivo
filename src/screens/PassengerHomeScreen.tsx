@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Plus, Bell, Settings, Filter, Home, Search, ClipboardList, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { MOCK_ROUTES, Route } from '../mock/data';
+import { useRuta } from '../context/RouteContext';
 import { RouteCard } from '../components/RouteCard';
 import { Button } from '../components/ui/Button';
 import { useNavigate } from 'react-router-dom';
@@ -10,13 +10,16 @@ import { toTitleCase } from '../lib/utils';
 
 export const PassengerHomeScreen: React.FC = () => {
   const { user } = useAuth();
+  const { obtenerRutas } = useRuta();
   const navigate = useNavigate();
   const [filter, setFilter] = useState('');
-  const [routes] = useState<Route[]>(MOCK_ROUTES);
 
-  const filteredRoutes = routes.filter(r => 
-    r.origin.toLowerCase().includes(filter.toLowerCase()) || 
-    r.destination.toLowerCase().includes(filter.toLowerCase())
+  const rutas = obtenerRutas();
+  const activeRoute = user?.id ? rutas.find((ruta) => ruta.pasajeros.some(p => p.id === user.id)) : undefined;
+  const filteredRoutes = rutas.filter(
+    (r) =>
+      r.origin.toLowerCase().includes(filter.toLowerCase()) ||
+      r.destination.toLowerCase().includes(filter.toLowerCase())
   );
 
   return (
@@ -56,6 +59,23 @@ export const PassengerHomeScreen: React.FC = () => {
             <Filter className="w-4 h-4 text-primary" />
           </button>
         </div>
+
+        {activeRoute && activeRoute.status === 'active' && (
+          <div className="mt-6 bg-emerald-50 border border-emerald-100 rounded-3xl p-5 shadow-soft">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">Ruta en curso</p>
+                <p className="mt-2 text-sm text-slate-700 font-medium">Estás dentro de una ruta compartida. Puedes ver los detalles o abandonar la ruta desde aquí.</p>
+              </div>
+              <button
+                onClick={() => navigate(`/route/${activeRoute.id}`)}
+                className="text-sm font-black uppercase tracking-widest text-emerald-700 bg-white px-4 py-3 rounded-2xl shadow-sm border border-emerald-100"
+              >
+                Ver ruta
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Main Content */}
