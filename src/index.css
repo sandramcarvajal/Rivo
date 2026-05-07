@@ -9,7 +9,6 @@
   --color-primary-foreground: #ffffff;
   
   --color-accent: #3B82F6;
-  --color-surface: #F1F5F9;
   
   /* Semantic UI Colors */
   --color-success: #22c55e;
@@ -41,6 +40,74 @@
   --animate-bounce-subtle: bounce-subtle 2s infinite ease-in-out;
 }
 
+:root {
+  /* Light mode (default) */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  
+  --surface: #ffffff;
+  --surface-soft: #f8fafc;
+  --surface-strong: #f1f5f9;
+  
+  --text-primary: #000000;
+  --text-body: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  
+  --border-primary: #e2e8f0;
+  --border-secondary: #cbd5e1;
+  
+  --bg-success-soft: #f0fdf4;
+  --bg-danger-soft: #fef2f2;
+  --bg-warning-soft: #fffbeb;
+  --bg-info-soft: #eff6ff;
+  
+  --text-success: #16a34a;
+  --text-danger: #dc2626;
+  --text-warning: #d97706;
+  --text-info: #2563eb;
+  
+  --border-success: #bbf7d0;
+  --border-danger: #fecaca;
+  --border-warning: #fde047;
+  --border-info: #bfdbfe;
+}
+
+:root[data-theme='dark'] {
+  /* Dark mode */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  
+  --surface: #1e293b;
+  --surface-soft: #334155;
+  --surface-strong: #0f172a;
+  
+  --text-primary: #ffffff;
+  --text-body: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  
+  --border-primary: #334155;
+  --border-secondary: #475569;
+  
+  --bg-success-soft: #064e3b;
+  --bg-danger-soft: #7f1d1d;
+  --bg-warning-soft: #78350f;
+  --bg-info-soft: #082f49;
+  
+  --text-success: #86efac;
+  --text-danger: #fca5a5;
+  --text-warning: #fdba74;
+  --text-info: #93c5fd;
+  
+  --border-success: #166534;
+  --border-danger: #991b1b;
+  --border-warning: #b45309;
+  --border-info: #1e40af;
+}
+
 @keyframes bounce-subtle {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-4px); }
@@ -48,17 +115,20 @@
 
 @layer base {
   html, body, #root {
-    @apply h-full w-full overflow-hidden bg-slate-100;
+    @apply h-full w-full overflow-hidden;
+    background-color: var(--bg-tertiary);
   }
 
   body {
-    @apply text-slate-800 font-sans;
+    @apply text-base font-sans;
+    color: var(--text-body);
     -webkit-tap-highlight-color: transparent;
   }
 }
 
 .mobile-container {
-  @apply h-full w-full max-w-[440px] mx-auto bg-white shadow-2xl relative overflow-hidden flex flex-col;
+  @apply h-full w-full max-w-[440px] mx-auto shadow-2xl relative overflow-hidden flex flex-col;
+  background-color: var(--surface);
 }
 
 .safe-area-top {
@@ -71,4 +141,117 @@
 
 .drawer-shadow {
   box-shadow: 20px 0 50px -12px rgb(0 0 0 / 0.25);
+}
+
+/* Semantic helper classes */
+.bg-surface {
+  background-color: var(--surface);
+}
+
+.bg-surface-soft {
+  background-color: var(--surface-soft);
+}
+
+.bg-surface-strong {
+  background-color: var(--surface-strong);
+}
+
+.text-body {
+  color: var(--text-body);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.border-surface {
+  border-color: var(--border-primary);
+}
+
+.bg-success-soft {
+  background-color: var(--bg-success-soft);
+}
+
+.bg-danger-soft {
+  background-color: var(--bg-danger-soft);
+}
+
+.bg-warning-soft {
+  background-color: var(--bg-warning-soft);
+}
+
+.bg-info-soft {
+  background-color: var(--bg-info-soft);
+}
+
+.text-success {
+  color: var(--text-success);
+}
+
+.text-danger {
+  color: var(--text-danger);
+}
+
+.text-warning {
+  color: var(--text-warning);
+}
+
+.text-info {
+  color: var(--text-info);
+}
+
+.border-success {
+  border-color: var(--border-success);
+}
+
+.border-danger {
+  border-color: var(--border-danger);
+}
+
+.border-warning {
+  border-color: var(--border-warning);
+}
+
+.border-info {
+  border-color: var(--border-info);
+}
+
+/* Theme helper classes */
+
+.bg-primary-theme {
+  background-color: var(--bg-primary);
+}
+
+.bg-secondary {
+  background-color: var(--bg-secondary);
+}
+
+.bg-tertiary {
+  background-color: var(--bg-tertiary);
+}
+
+.text-primary-theme {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.border-border-primary {
+  border-color: var(--border-primary);
+}
+
+.border-border-secondary {
+  border-color: var(--border-secondary);
+}
+
+/* Missing helper classes */
+
+.text-text-primary {
+  color: var(--text-primary);
+}
+
+.text-text-secondary {
+  color: var(--text-secondary);
 }

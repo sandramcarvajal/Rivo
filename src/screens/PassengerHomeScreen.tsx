@@ -23,53 +23,53 @@ export const PassengerHomeScreen: React.FC = () => {
   );
 
   return (
-    <div className="flex-1 flex flex-col bg-slate-50 overflow-hidden">
+    <div className="flex-1 flex flex-col bg-tertiary overflow-hidden">
       {/* Header */}
-      <div className="bg-white px-6 pt-12 pb-6 shadow-sm z-20">
+      <div className="bg-surface px-6 pt-12 pb-6 shadow-sm z-20 border-b border-border-primary">
         <div className="flex justify-between items-center mb-8 pl-14">
           <div className="flex items-center gap-3">
              <div className="w-10 h-10 bg-primary rounded-md flex items-center justify-center shadow-lg shadow-primary/20">
                 <div className="w-3 h-3 bg-white rounded-sm rotate-45" />
              </div>
-             <span className="text-xl font-black text-slate-800 tracking-tighter uppercase italic">Rivo</span>
+             <span className="text-xl font-black text-body tracking-tighter uppercase italic">Rivo</span>
           </div>
           <div className="flex items-center space-x-3">
-             <button className="p-3 bg-slate-50 text-slate-400 rounded-md relative border border-slate-100 shadow-sm transition-transform active:scale-95">
+             <button className="p-3 bg-surface-soft text-text-muted rounded-md relative border border-border-primary shadow-sm transition-transform active:scale-95">
                 <Bell className="w-5 h-5" />
-                <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-blue-500 rounded-full border-2 border-white"></span>
+                <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-success rounded-full border-2 border-surface"></span>
              </button>
           </div>
         </div>
 
         <div className="mb-6">
            <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-1 block">Pasajero</span>
-           <h1 className="text-2xl font-black text-slate-900 tracking-tight">¿A dónde vas, {user?.name?.split(' ')[0] ? toTitleCase(user.name.split(' ')[0]) : 'Usuario'}?</h1>
+           <h1 className="text-2xl font-black text-body tracking-tight">¿A dónde vas, {user?.name?.split(' ')[0] ? toTitleCase(user.name.split(' ')[0]) : 'Usuario'}?</h1>
         </div>
 
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
           <input
             type="text"
             placeholder="Buscar por sede o punto de origen..."
-            className="w-full pl-12 pr-12 py-4 bg-slate-50 border-none rounded-md focus:ring-2 focus:ring-primary/10 text-sm font-medium placeholder:text-slate-400"
+            className="w-full pl-12 pr-12 py-4 bg-surface-soft border-none rounded-md focus:ring-2 focus:ring-primary/10 text-sm font-medium placeholder:text-muted text-body"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
           />
-          <button className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 bg-white rounded-sm shadow-sm">
+          <button className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 bg-surface rounded-sm shadow-sm">
             <Filter className="w-4 h-4 text-primary" />
           </button>
         </div>
 
         {activeRoute && activeRoute.status === 'active' && (
-          <div className="mt-6 bg-emerald-50 border border-emerald-100 rounded-3xl p-5 shadow-soft">
+          <div className="mt-6 bg-success-soft border border-success rounded-3xl p-5 shadow-soft">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">Ruta en curso</p>
-                <p className="mt-2 text-sm text-slate-700 font-medium">Estás dentro de una ruta compartida. Puedes ver los detalles o abandonar la ruta desde aquí.</p>
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-success">Ruta en curso</p>
+                <p className="mt-2 text-sm text-body font-medium">Estás dentro de una ruta compartida. Puedes ver los detalles o abandonar la ruta desde aquí.</p>
               </div>
               <button
                 onClick={() => navigate(`/route/${activeRoute.id}`)}
-                className="text-sm font-black uppercase tracking-widest text-emerald-700 bg-white px-4 py-3 rounded-2xl shadow-sm border border-emerald-100"
+                className="text-sm font-black uppercase tracking-widest text-success bg-surface px-4 py-3 rounded-2xl shadow-sm border border-success"
               >
                 Ver ruta
               </button>
@@ -81,7 +81,7 @@ export const PassengerHomeScreen: React.FC = () => {
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
         <div className="flex justify-between items-center px-1">
-          <h2 className="font-bold text-gray-900">Rutas sugeridas hoy</h2>
+          <h2 className="font-bold text-body">Rutas sugeridas hoy</h2>
           <button className="text-sm font-semibold text-primary">Ver todas</button>
         </div>
 
@@ -105,11 +105,11 @@ export const PassengerHomeScreen: React.FC = () => {
           </div>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center py-20 text-center">
-            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-              <Search className="w-10 h-10 text-gray-300" />
+            <div className="w-20 h-20 bg-surface-soft rounded-full flex items-center justify-center mb-4">
+              <Search className="w-10 h-10 text-muted" />
             </div>
-            <h3 className="font-bold text-gray-900 mb-1">No hay rutas disponibles</h3>
-            <p className="text-sm text-gray-500 max-w-[240px]">
+            <h3 className="font-bold text-body mb-1">No hay rutas disponibles</h3>
+            <p className="text-sm text-muted max-w-[240px]">
               Intenta cambiar los filtros o busca una sede diferente.
             </p>
           </div>
@@ -117,7 +117,7 @@ export const PassengerHomeScreen: React.FC = () => {
       </div>
 
       {/* Bottom Nav */}
-      <div className="bg-white border-t border-gray-100 px-8 py-4 flex justify-between items-center safe-area-bottom">
+      <div className="bg-surface border-t border-border-primary px-8 py-4 flex justify-between items-center safe-area-bottom">
         <NavIcon icon={<Home className="w-6 h-6" />} label="Inicio" active />
         <NavIcon icon={<ClipboardList className="w-6 h-6" />} label="Mis Viajes" onClick={() => navigate('/my-requests')} />
         <div className="relative -mt-12">

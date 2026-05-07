@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavig
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { DrawerProvider, useDrawer } from './context/DrawerContext';
 import { RouteProvider } from './context/RouteContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { LoginScreen } from './screens/LoginScreen';
 import { OnboardingScreen } from './screens/OnboardingScreen';
 import { DriverHomeScreen } from './screens/DriverHomeScreen';
@@ -37,7 +38,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       {token && !hideHamburger && (
         <button 
           onClick={() => setIsDrawerOpen(true)}
-          className="absolute top-12 left-6 z-30 p-3 bg-white/80 backdrop-blur-md rounded-2xl shadow-sm text-slate-800 active:scale-95 transition-transform"
+          className="absolute top-12 left-6 z-30 p-3 bg-surface-soft backdrop-blur-md rounded-2xl shadow-sm text-body active:scale-95 transition-transform"
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -171,13 +172,15 @@ const AppContent: React.FC = () => {
 export default function App() {
   return (
     <Router>
-      <AuthProvider>
-        <RouteProvider>
-          <DrawerProvider>
-            <AppContent />
-          </DrawerProvider>
-        </RouteProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <RouteProvider>
+            <DrawerProvider>
+              <AppContent />
+            </DrawerProvider>
+          </RouteProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </Router>
   );
 }

@@ -18,11 +18,11 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const variants = {
-    primary: 'bg-primary text-white hover:bg-primary-dark shadow-lg shadow-primary/20 active:scale-[0.98]',
-    secondary: 'bg-slate-800 text-white hover:bg-slate-900 shadow-lg shadow-slate-900/10 active:scale-[0.98]',
-    outline: 'border-2 border-slate-200 text-slate-700 bg-white hover:bg-slate-50 active:scale-[0.98]',
-    ghost: 'text-slate-600 hover:bg-slate-100 active:scale-[0.98]',
-    danger: 'bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-600/20 active:scale-[0.98]',
+    primary: 'bg-primary text-white hover:bg-primary-600 shadow-lg shadow-primary/20 active:scale-[0.98]',
+    secondary: 'bg-surface-soft text-body hover:bg-surface-strong shadow-sm active:scale-[0.98]',
+    outline: 'border-2 border-border-primary text-body bg-surface hover:bg-surface-soft active:scale-[0.98]',
+    ghost: 'text-text-secondary hover:bg-surface-soft active:scale-[0.98]',
+    danger: 'bg-danger text-white hover:opacity-90 shadow-lg shadow-danger/20 active:scale-[0.98]',
   };
 
   const sizes = {
