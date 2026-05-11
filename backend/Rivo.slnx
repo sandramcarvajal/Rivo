@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Rivo.Api/Rivo.Api.csproj" />
+  <Project Path="Rivo.Application/Rivo.Application.csproj" />
+  <Project Path="Rivo.Domain/Rivo.Domain.csproj" />
+  <Project Path="Rivo.Infrastructure/Rivo.Infrastructure.csproj" />
+  <Project Path="Rivo.Shared/Rivo.Shared.csproj" />
+</Solution>
