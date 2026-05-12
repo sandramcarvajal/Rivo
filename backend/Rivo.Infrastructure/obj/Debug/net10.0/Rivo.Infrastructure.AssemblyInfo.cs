@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Rivo.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6b18bfedcdd2c6cbf57ec37ef73827a10a22d951")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7d16242073830a25d3b708fbc1edb35b1f197c7a")]
 [assembly: System.Reflection.AssemblyProductAttribute("Rivo.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Rivo.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
