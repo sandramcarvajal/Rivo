@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft, MapPin, Calendar, Clock, Users, DollarSign, ChevronRight, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useRuta } from '../context/RouteContext';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { toTitleCase } from '../lib/utils';
@@ -9,6 +11,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const CreateRouteScreen: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { crearRuta } = useRuta();
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,27 +31,27 @@ export const CreateRouteScreen: React.FC = () => {
   };
 
   const handleCreate = async () => {
+    if (!user) {
+      return;
+    }
+
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 1000));
-    
-    // Save to localStorage
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     const newRoute = {
       id: uuidv4(),
-      driverId: 'u2', // Current user ID in this demo context
+      driverId: user.id,
+      driverName: user.name,
       origin: toTitleCase(formData.origin),
       destination: toTitleCase(formData.destination),
       date: formData.date,
       time: formData.time,
+      seats: formData.seats,
       availableSeats: formData.seats,
-      totalSeats: formData.seats,
       price: formData.price,
-      status: 'active',
-      passengers: []
     };
 
-    const savedRoutes = JSON.parse(localStorage.getItem('rivo_driver_routes') || '[]');
-    localStorage.setItem('rivo_driver_routes', JSON.stringify([newRoute, ...savedRoutes]));
-
+    crearRuta(newRoute);
     setIsLoading(false);
     navigate('/driver');
   };

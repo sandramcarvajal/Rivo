@@ -40,8 +40,8 @@ export const LoginScreen: React.FC = () => {
   return (
     <div className="flex-1 bg-slate-50 p-8 overflow-y-auto flex flex-col justify-center">
       <div className="mb-12">
-        <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-8 shadow-strong rotate-3">
-          <span className="text-3xl font-black text-white italic -rotate-3">R</span>
+        <div className="w-28 h-28 bg-slate-100 border border-slate-200 rounded-[36px] flex items-center justify-center mb-8 shadow-strong">
+          <img src="/logo.png" alt="Logo de Rivo" className="w-20 h-20 object-contain" />
         </div>
         <h2 className="text-3xl font-black text-slate-900 mb-3 tracking-tighter">Bienvenido a Rivo</h2>
         <p className="text-slate-500 font-medium leading-relaxed">Accede con tu cuenta corporativa para gestionar tus rutas en SyC.</p>

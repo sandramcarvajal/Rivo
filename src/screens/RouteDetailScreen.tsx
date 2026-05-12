@@ -2,29 +2,30 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft, MapPin, Calendar, Clock, Users, ShieldCheck, MessageCircle, AlertCircle, ListChecks, Star } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { MOCK_ROUTES, MOCK_REQUESTS } from '../mock/data';
+import { MOCK_REQUESTS } from '../mock/data';
 import { Button } from '../components/ui/Button';
 import { useAuth } from '../context/AuthContext';
+import { useRuta } from '../context/RouteContext';
 import { toTitleCase } from '../lib/utils';
 
 export const RouteDetailScreen: React.FC = () => {
   const { id } = useParams();
   const { user } = useAuth();
+  const { obtenerRutaPorId, unirseARuta, salirDeRuta, finalizarRuta, rutas } = useRuta();
   const navigate = useNavigate();
-  
-  // Find route in mock or localStorage
-  const mockRoute = MOCK_ROUTES.find(r => r.id === id);
-  const localRoutes = JSON.parse(localStorage.getItem('rivo_driver_routes') || '[]');
-  const localRoute = localRoutes.find((r: any) => r.id === id);
-  const route = mockRoute || localRoute;
 
+  const route = id ? obtenerRutaPorId(id) : undefined;
   const [requested, setRequested] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   if (!route) return null;
 
   const isDriver = user?.role === 'driver';
-  const pendingRequests = MOCK_REQUESTS.filter(r => r.routeId === route.id && r.status === 'pending');
+  const isInRoute = user?.id ? route.pasajeros.some(p => p.id === user.id) : false;
+  const hasAnotherActiveRoute = user?.id
+    ? rutas.some((r) => r.status === 'active' && r.pasajeros.some(p => p.id === user.id) && r.id !== route.id)
+    : false;
+  const pendingRequests = MOCK_REQUESTS.filter((r) => r.routeId === route.id && r.status === 'pending');
   
   const origin = toTitleCase(route.origin);
   const destination = toTitleCase(route.destination);
@@ -32,9 +33,33 @@ export const RouteDetailScreen: React.FC = () => {
 
   const handleRequest = async () => {
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 1500));
-    setIsLoading(false);
+    await new Promise((r) => setTimeout(r, 1500));
+
+    if (!user?.id || !route) {
+      setIsLoading(false);
+      return;
+    }
+
+    if (isDriver) {
+      finalizarRuta(route.id);
+      navigate('/driver');
+      return;
+    }
+
+    if (isInRoute) {
+      salirDeRuta(route.id, user.id);
+      navigate('/passenger');
+      return;
+    }
+
+    if (route.availableSeats === 0 || hasAnotherActiveRoute) {
+      setIsLoading(false);
+      return;
+    }
+
+    unirseARuta(route.id, { id: user.id, nombre: user.name });
     setRequested(true);
+    setIsLoading(false);
   };
 
   return (
@@ -144,8 +169,12 @@ export const RouteDetailScreen: React.FC = () => {
                 <ListChecks className="w-6 h-6" />
                 <span>Gestionar Solicitudes ({pendingRequests.length})</span>
               </Button>
-              <Button variant="outline" className="w-full h-16 text-slate-400 border-slate-100 rounded-xl font-black text-xs uppercase tracking-widest">
-                Cancelar Ruta
+              <Button 
+                className="w-full h-16 text-lg font-black tracking-tight shadow-strong rounded-xl"
+                onClick={handleRequest}
+                isLoading={isLoading}
+              >
+                Finalizar ruta
               </Button>
             </div>
           ) : (
@@ -158,23 +187,24 @@ export const RouteDetailScreen: React.FC = () => {
                  <div className="w-14 h-14 bg-green-500 rounded-md flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-200">
                     <ShieldCheck className="w-7 h-7 text-white" />
                  </div>
-                 <h4 className="font-black text-green-900 text-xl mb-1 tracking-tight">¡Solicitud Enviada!</h4>
-                 <p className="text-sm text-green-700 font-medium">Te notificaremos cuando {driverName} apruebe tu solicitud.</p>
+                 <h4 className="font-black text-green-900 text-xl mb-1 tracking-tight">¡Estás en la ruta!</h4>
+                 <p className="text-sm text-green-700 font-medium">Ya formas parte de esta ruta. Puedes salir cuando quieras.</p>
                  <Button 
                   variant="outline" 
                   className="mt-6 w-full h-14 border-green-200 text-green-800 rounded-md font-black text-xs uppercase tracking-widest"
-                  onClick={() => navigate('/my-requests')}
+                  onClick={() => navigate(`/route/${route.id}`)}
                 >
-                    Ver mis solicitudes
+                    Ver detalles
                  </Button>
               </motion.div>
             ) : (
               <Button 
-                className="w-full h-18 text-xl font-black tracking-tight shadow-strong rounded-xl" 
+                className="w-full h-16 text-xl font-black tracking-tight shadow-strong rounded-xl"
                 onClick={handleRequest}
                 isLoading={isLoading}
+                disabled={route.availableSeats === 0 || hasAnotherActiveRoute}
               >
-                Solicitar Cupo ahora
+                {isInRoute ? 'Salir de la ruta' : route.availableSeats === 0 ? 'Ruta llena' : hasAnotherActiveRoute ? 'Tienes otra ruta activa' : 'Unirse a la ruta'}
               </Button>
             )
           )}

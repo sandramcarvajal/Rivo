@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User } from '../mock/data';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Vehicle {
   make: string;
@@ -11,6 +12,7 @@ interface Vehicle {
 
 interface AuthContextType {
   user: User | null;
+  token: string | null;
   login: (email: string) => Promise<boolean>;
   logout: () => void;
   setRole: (role: 'driver' | 'passenger') => void;
@@ -37,6 +39,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const saved = localStorage.getItem('rivo_user');
     return saved ? JSON.parse(saved) : null;
   });
+  const [token, setToken] = useState<string | null>(() => {
+    return localStorage.getItem('authToken');
+  });
   const [vehicle, setVehicle] = useState<Vehicle>(() => {
     const saved = localStorage.getItem('rivo_vehicle');
     return saved ? JSON.parse(saved) : {
@@ -56,6 +61,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.removeItem('rivo_user');
     }
   }, [user]);
+
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem('authToken', token);
+    } else {
+      localStorage.removeItem('authToken');
+    }
+  }, [token]);
 
   useEffect(() => {
     localStorage.setItem('rivo_vehicle', JSON.stringify(vehicle));
@@ -84,9 +97,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const rawName = email.split('@')[0].replace(/\./g, ' ');
     const name = toTitleCase(rawName);
 
+    // Generate token for persistent session
+    const newToken = 'authenticated_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    setToken(newToken);
+
     // Mock successful login
     setUser({
-      id: 'u2',
+      id: uuidv4(),
       name: name,
       email: email,
       role: null,
@@ -97,6 +114,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
+    setToken(null);
     setUser(null);
   };
 
@@ -160,6 +178,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <AuthContext.Provider value={{ 
       user, 
+      token,
       login, 
       logout, 
       setRole, 
