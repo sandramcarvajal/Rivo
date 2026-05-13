@@ -6,3 +6,15 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# .NET build
+bin/
+obj/
+
+# compilados
+*.dll
+*.exe
+*.pdb
+
+# Visual Studio
+.vs/
