@@ -1,0 +1,6 @@
+@Rivo.Api_HostAddress = http://localhost:5028
+
+GET {{Rivo.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
